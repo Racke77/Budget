@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Budget.Calculations;
+﻿using System.Collections.ObjectModel;
 using Budget.Command;
+using Budget.Data;
 using Budget.Models;
 
 namespace Budget.ViewModels
@@ -23,20 +17,6 @@ namespace Budget.ViewModels
                 RaisePropertyChanged();
             }
         }
-        //private ObservableCollection<MoneyVM> adjustedTransactions = new();
-        //public ObservableCollection<MoneyVM> AdjustedTransactions
-        //{
-        //    get
-        //    {
-        //        return adjustedTransactions;
-        //    }
-        //    set
-        //    {
-        //        ListAllTransactions();
-        //        //adjustedTransactions = value;
-        //        RaisePropertyChanged();
-        //    }
-        //}
 
         private MonthVM? selectedMonth;
         public MonthVM? SelectedMonth
@@ -65,7 +45,8 @@ namespace Budget.ViewModels
         public DelegateCommand DeleteMonthCommand { get; }
         public DelegateCommand AddTransactionCommand { get; }
         public DelegateCommand DeleteTransactionCommand { get; }
-        public BudgetVM() //CONSTRUCTOR
+        private BudgetRepository BudgetRepository { get; set; }
+        public BudgetVM(ApplicationDbContext applicationDbContext) //CONSTRUCTOR
         {
             //SEEDING
             Months.Add(new MonthVM(new Month() { Name = "Test 1" }));
@@ -76,6 +57,8 @@ namespace Budget.ViewModels
                 month.MoneyTrans.Add(new MoneyVM(new MoneyTransaction() { Money = 1000, Name = "Test money" }));
                 month.MoneyTrans.Add(new MoneyVM(new MoneyTransaction() { Money = -1000, Name = "Test money" }));
             }
+
+            BudgetRepository = new BudgetRepository(applicationDbContext);
 
             //DELEGATE COMMANDS
             AddMonthCommand = new DelegateCommand(AddMonth);
@@ -114,8 +97,8 @@ namespace Budget.ViewModels
         {
             MoneyTransaction trans = new()
             {
-                Id = SelectedMonth.MoneyTrans.Count
-            }; //to stop it from giving everything ID==0
+                Id = SelectedMonth.MoneyTrans.Count //to stop it from giving everything ID==0
+            }; 
             var transVM = new MoneyVM(trans);
             SelectedMonth.MoneyTrans.Add(transVM);
             SelectedTrans = transVM;
@@ -130,61 +113,7 @@ namespace Budget.ViewModels
             }
             else
             {
-                //var test = new MonthlyCalc(SelectedMonth);
-                //SelectedMonth.CalcFullNumber = test.MonthlyPlusMinus();
                 return SelectedMonth.MoneyTrans;
-                //adjustedTransactions.Clear();
-                //foreach (var money in SelectedMonth.MoneyTrans)
-                //{
-                ////    if (money.IsThisIncome == true) //income
-                ////    {
-                ////        if (money.IsThisSalary == true) //salary
-                ////        {
-                ////            var salaryCalculator = new CalculateSalary(money.Money); //send in base-money
-                ////            if (money.Money == money.CalculatedValue) //value has not been calculated
-                ////            {
-                ////                money.CalculatedValue = salaryCalculator.SalaryCalc(money); //update with calculated value
-                ////            }
-                ////            else { } //salary has already been adjusted -> don't touch
-                ////        }
-                ////    }
-                ////    else //expense
-                ////    {
-                ////        if (money.CalculatedValue > 0) { money.CalculatedValue = money.CalculatedValue * -1; } //turn into negative numbers if not already done
-                ////    }
-                //    adjustedTransactions.Add(money);
-                //}
-
-                ////var positiveMoney = SelectedMonth.MoneyTrans.Where(x => x.IsThisIncome).ToList();
-                ////var negativeMoney = SelectedMonth.MoneyTrans.Where(x => x.IsThisIncome == false).ToList();
-
-                ////foreach (var sMoney in positiveMoney)
-                ////{
-                ////    if (sMoney.IsThisSalary==true)
-                ////    {
-                ////        //find the original one
-                ////        var original = SelectedMonth.MoneyTrans.Where(x=>x.Id==sMoney.Id).FirstOrDefault();
-                ////        //compare ORIGINAL to CURRENT
-
-
-                ////        var salaryCalculator = new CalculateSalary(original); //send in ORIGINAL moneyVM
-                ////        if (salaryCalculator.HasSalaryBeenCalculated(sMoney) == false)//test method for bool
-                ////        {
-                ////            sMoney.Money = salaryCalculator.SalaryCalc(sMoney);
-                ////        }
-                ////        else { } //salary has already been adjusted -> don't touch
-                ////    }
-                ////}
-                ////foreach (var pMoney in positiveMoney)
-                ////{
-                ////    adjustedTransactions.Add(pMoney);
-                ////}
-                ////foreach (var nMoney in negativeMoney)
-                ////{
-                ////    if (nMoney.Money > 0) { nMoney.Money = nMoney.Money * -1; } //turn into negative numbers if not already done
-                ////    adjustedTransactions.Add(nMoney);
-                ////}
-                //return adjustedTransactions;
             }
         }
     }

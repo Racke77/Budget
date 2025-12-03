@@ -1,13 +1,5 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using Budget.Data;
 using Budget.ViewModels;
 
 namespace Budget
@@ -21,7 +13,9 @@ namespace Budget
         public MainWindow()
         {
             InitializeComponent();
-            viewModel = new BudgetVM();
+
+            ApplicationDbContext dbContext = new ApplicationDbContext();
+            viewModel = new BudgetVM(dbContext);
             DataContext = viewModel;
         }
 
