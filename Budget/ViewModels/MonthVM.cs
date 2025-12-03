@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Budget.Calculations;
 using Budget.Command;
 using Budget.Models;
 
@@ -44,6 +45,19 @@ namespace Budget.ViewModels
             {
                 month.Name = value;
                 RaisePropertyChanged();
+            }
+        }
+        private float calcFullNumber = new();
+        public float CalcFullNumber
+        {
+            get {
+                var test = new MonthlyCalc(this);
+                calcFullNumber = test.MonthlyPlusMinus();
+                return calcFullNumber; }
+            set
+            {
+                var test = new MonthlyCalc(this);
+                calcFullNumber = test.MonthlyPlusMinus();
             }
         }
 
