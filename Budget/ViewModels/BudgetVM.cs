@@ -79,6 +79,7 @@ namespace Budget.ViewModels
         private void AddMonth(object? parameter)
         {
             Month month = new();
+            BudgetRepository.CreateMonth(month);
             var monthVM = new MonthVM(month);
             Months.Add(monthVM);
             SelectedMonth = monthVM;

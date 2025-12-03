@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Budget.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Budget.Data
 {
@@ -15,7 +16,7 @@ namespace Budget.Data
         public DbSet<Month> Months { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var test = optionsBuilder.UseSqlite(ConnectionString);
+            optionsBuilder.UseSqlServer(ConnectionString);
         }
     }
 }
