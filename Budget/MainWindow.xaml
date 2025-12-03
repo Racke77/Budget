@@ -90,6 +90,7 @@
                 </ListView.ItemTemplate>
             </ListView>
             <TextBlock>Calculated Money</TextBlock>
+            <TextBlock Text="{Binding SelectedMonth.CalcFullNumber, Mode=TwoWay}"  Margin="0 5 0 5" FontWeight="Bold"></TextBlock>
         </StackPanel>
 
         <!--GRID 3/1-->

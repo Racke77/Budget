@@ -23,20 +23,20 @@ namespace Budget.ViewModels
                 RaisePropertyChanged();
             }
         }
-        private ObservableCollection<MoneyVM> adjustedTransactions = new();
-        public ObservableCollection<MoneyVM> AdjustedTransactions
-        {
-            get
-            {
-                return adjustedTransactions;
-            }
-            set
-            {
-                ListAllTransactions();
-                //adjustedTransactions = value;
-                RaisePropertyChanged();
-            }
-        }
+        //private ObservableCollection<MoneyVM> adjustedTransactions = new();
+        //public ObservableCollection<MoneyVM> AdjustedTransactions
+        //{
+        //    get
+        //    {
+        //        return adjustedTransactions;
+        //    }
+        //    set
+        //    {
+        //        ListAllTransactions();
+        //        //adjustedTransactions = value;
+        //        RaisePropertyChanged();
+        //    }
+        //}
 
         private MonthVM? selectedMonth;
         public MonthVM? SelectedMonth
@@ -126,63 +126,65 @@ namespace Budget.ViewModels
         {
             if (SelectedMonth == null)
             {
-                return adjustedTransactions;
+                return null;
             }
             else
             {
+                //var test = new MonthlyCalc(SelectedMonth);
+                //SelectedMonth.CalcFullNumber = test.MonthlyPlusMinus();
                 return SelectedMonth.MoneyTrans;
-                adjustedTransactions.Clear();
-                foreach (var money in SelectedMonth.MoneyTrans)
-                {
-                //    if (money.IsThisIncome == true) //income
-                //    {
-                //        if (money.IsThisSalary == true) //salary
-                //        {
-                //            var salaryCalculator = new CalculateSalary(money.Money); //send in base-money
-                //            if (money.Money == money.CalculatedValue) //value has not been calculated
-                //            {
-                //                money.CalculatedValue = salaryCalculator.SalaryCalc(money); //update with calculated value
-                //            }
-                //            else { } //salary has already been adjusted -> don't touch
-                //        }
-                //    }
-                //    else //expense
-                //    {
-                //        if (money.CalculatedValue > 0) { money.CalculatedValue = money.CalculatedValue * -1; } //turn into negative numbers if not already done
-                //    }
-                    adjustedTransactions.Add(money);
-                }
-
-                //var positiveMoney = SelectedMonth.MoneyTrans.Where(x => x.IsThisIncome).ToList();
-                //var negativeMoney = SelectedMonth.MoneyTrans.Where(x => x.IsThisIncome == false).ToList();
-
-                //foreach (var sMoney in positiveMoney)
+                //adjustedTransactions.Clear();
+                //foreach (var money in SelectedMonth.MoneyTrans)
                 //{
-                //    if (sMoney.IsThisSalary==true)
-                //    {
-                //        //find the original one
-                //        var original = SelectedMonth.MoneyTrans.Where(x=>x.Id==sMoney.Id).FirstOrDefault();
-                //        //compare ORIGINAL to CURRENT
+                ////    if (money.IsThisIncome == true) //income
+                ////    {
+                ////        if (money.IsThisSalary == true) //salary
+                ////        {
+                ////            var salaryCalculator = new CalculateSalary(money.Money); //send in base-money
+                ////            if (money.Money == money.CalculatedValue) //value has not been calculated
+                ////            {
+                ////                money.CalculatedValue = salaryCalculator.SalaryCalc(money); //update with calculated value
+                ////            }
+                ////            else { } //salary has already been adjusted -> don't touch
+                ////        }
+                ////    }
+                ////    else //expense
+                ////    {
+                ////        if (money.CalculatedValue > 0) { money.CalculatedValue = money.CalculatedValue * -1; } //turn into negative numbers if not already done
+                ////    }
+                //    adjustedTransactions.Add(money);
+                //}
+
+                ////var positiveMoney = SelectedMonth.MoneyTrans.Where(x => x.IsThisIncome).ToList();
+                ////var negativeMoney = SelectedMonth.MoneyTrans.Where(x => x.IsThisIncome == false).ToList();
+
+                ////foreach (var sMoney in positiveMoney)
+                ////{
+                ////    if (sMoney.IsThisSalary==true)
+                ////    {
+                ////        //find the original one
+                ////        var original = SelectedMonth.MoneyTrans.Where(x=>x.Id==sMoney.Id).FirstOrDefault();
+                ////        //compare ORIGINAL to CURRENT
 
 
-                //        var salaryCalculator = new CalculateSalary(original); //send in ORIGINAL moneyVM
-                //        if (salaryCalculator.HasSalaryBeenCalculated(sMoney) == false)//test method for bool
-                //        {
-                //            sMoney.Money = salaryCalculator.SalaryCalc(sMoney);
-                //        }
-                //        else { } //salary has already been adjusted -> don't touch
-                //    }
-                //}
-                //foreach (var pMoney in positiveMoney)
-                //{
-                //    adjustedTransactions.Add(pMoney);
-                //}
-                //foreach (var nMoney in negativeMoney)
-                //{
-                //    if (nMoney.Money > 0) { nMoney.Money = nMoney.Money * -1; } //turn into negative numbers if not already done
-                //    adjustedTransactions.Add(nMoney);
-                //}
-                return adjustedTransactions;
+                ////        var salaryCalculator = new CalculateSalary(original); //send in ORIGINAL moneyVM
+                ////        if (salaryCalculator.HasSalaryBeenCalculated(sMoney) == false)//test method for bool
+                ////        {
+                ////            sMoney.Money = salaryCalculator.SalaryCalc(sMoney);
+                ////        }
+                ////        else { } //salary has already been adjusted -> don't touch
+                ////    }
+                ////}
+                ////foreach (var pMoney in positiveMoney)
+                ////{
+                ////    adjustedTransactions.Add(pMoney);
+                ////}
+                ////foreach (var nMoney in negativeMoney)
+                ////{
+                ////    if (nMoney.Money > 0) { nMoney.Money = nMoney.Money * -1; } //turn into negative numbers if not already done
+                ////    adjustedTransactions.Add(nMoney);
+                ////}
+                //return adjustedTransactions;
             }
         }
     }
