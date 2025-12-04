@@ -28,22 +28,28 @@ namespace Budget.Data
         }
         private Month RecreateReocurringMoney(Month month) //don't do anything with VM -> SelectedMonth updates that
         {
-            var temp = GetLastMonth(); //previous month
-            foreach(var item in temp.ListMoney)
+            var prev = GetLastMonth(); //previous month
+            if (prev != null)
             {
-                if (item.ReocurringMonth==true) //if it will reoccur monthly make a copy of it
+                foreach (var item in prev.ListMoney)
                 {
-                    var tempItem = CopyMoneyTransaction(item);
-                    month.ListMoney.Add(tempItem);
+                    if (item.ReocurringMonth == true) //if it will reoccur monthly make a copy of it
+                    {
+                        var tempItem = CopyMoneyTransaction(item);
+                        month.ListMoney.Add(tempItem);
+                    }
                 }
-            }
-            var temp2 = GetLastEnumMonth(month); //last year
-            foreach (var item in temp2.ListMoney)
-            {
-                if (item.ReocurringYear == true) //if it will reoccur yearly make a copy of it
+                var temp2 = GetLastEnumMonth(month); //last year
+                if (temp2 != null)
                 {
-                    var tempItem = CopyMoneyTransaction(item);
-                    month.ListMoney.Add(tempItem);
+                    foreach (var item in temp2.ListMoney)
+                    {
+                        if (item.ReocurringYear == true) //if it will reoccur yearly make a copy of it
+                        {
+                            var tempItem = CopyMoneyTransaction(item);
+                            month.ListMoney.Add(tempItem);
+                        }
+                    }
                 }
             }
             return month;
@@ -53,7 +59,7 @@ namespace Budget.Data
         private MoneyTransaction CopyMoneyTransaction(MoneyTransaction oldMoney)
         {
             var newMoney = new MoneyTransaction();
-            newMoney = GiveMoneyAnId(newMoney);
+            //newMoney = GiveMoneyAnId(newMoney);
             newMoney.Name = oldMoney.Name;
             newMoney.Money = oldMoney.Money;
             newMoney.IsThisIncome = oldMoney.IsThisIncome;
@@ -75,6 +81,7 @@ namespace Budget.Data
         public List<Month> GetAllMonths()
         {
             return applicationDbContext.Months
+                .OrderByDescending(m=>m.Id)
                 .ToList();
         }
         public ObservableCollection<MoneyVM> GetMonthlyTransactions(MonthVM month)
@@ -96,7 +103,7 @@ namespace Budget.Data
         {
             return applicationDbContext.Months
                 .OrderBy(z => z.Id)
-                .Include(z=>z.ListMoney)
+                .Include(z => z.ListMoney)
                 .LastOrDefault();
         }
         private Month GetLastEnumMonth(Month month)
@@ -111,12 +118,19 @@ namespace Budget.Data
         //UPDATE
         public Month GiveMonthAnId(Month month)
         {
-            month.Id = applicationDbContext.Months.OrderBy(z => z.Id).LastOrDefault().Id+1; //stop whining about the ID you whimp
+            var prev = applicationDbContext.Months.OrderBy(z => z.Id).LastOrDefault();
+            if (prev == null) { month.Id = 1; }
+            else
+            {
+                month.Id = prev.Id + 1;
+            }
             return month;
         }
         public MoneyTransaction GiveMoneyAnId(MoneyTransaction money)
         {
-            money.Id = applicationDbContext.MoneyTransactions.OrderBy(z=>z.Id).LastOrDefault().Id + 1;
+            var prev = applicationDbContext.MoneyTransactions.OrderBy(z => z.Id).LastOrDefault();
+            if (prev == null) { money.Id = 1; }
+            else { money.Id = prev.Id + 1; }
             return money;
         }
         public void GiveMoneyAMonth(MoneyTransaction money, MonthVM monthVM)
@@ -131,7 +145,7 @@ namespace Budget.Data
         {
             var temp = applicationDbContext.Months
                 .Where(m => m.Id == month.Id)
-                .Include(m=>m.ListMoney)
+                .Include(m => m.ListMoney)
                 .FirstOrDefault();
             temp.Name = month.Name;
             //any changes to MONEY will go through database

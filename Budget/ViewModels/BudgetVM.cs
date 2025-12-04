@@ -87,7 +87,7 @@ namespace Budget.ViewModels
             else if (previousMonth.Name == MonthNameEnum.December) { monthName = MonthNameEnum.January; }
             else { monthName = previousMonth.Name + 1; }
             Month month = new() { Name = monthName }; //new month is next month
-            month = BudgetRepository.GiveMonthAnId(month);
+            ///month = BudgetRepository.GiveMonthAnId(month);
             BudgetRepository.CreateMonth(month);
             months.Clear();
             var allMonths = BudgetRepository.GetAllMonths();
@@ -112,7 +112,7 @@ namespace Budget.ViewModels
         private void AddTransaction(object? parameter) //CAN'T DO THIS -> lots of errors
         {
             MoneyTransaction trans = new();
-            trans = BudgetRepository.GiveMoneyAnId(trans); //to stop it from giving everything ID==0
+            //trans = BudgetRepository.GiveMoneyAnId(trans); //to stop it from giving everything ID==0
             BudgetRepository.GiveMoneyAMonth(trans, SelectedMonth);
             BudgetRepository.CreateMoneyTransaction(trans);
             var transVM = new MoneyVM(trans);

@@ -76,7 +76,7 @@
 
         <!--GRID 2/2-->
         <StackPanel Grid.Row="1" Grid.Column="1" >
-            <TextBox Text="{Binding SelectedMonth.Name, Mode=TwoWay}"></TextBox>
+            <TextBlock Text="{Binding SelectedMonth.Name, Mode=TwoWay}"></TextBlock>
             <ListView Grid.Row="1" 
                       ItemsSource="{Binding SelectedMonth.MoneyTrans}"
                       SelectedItem="{Binding SelectedTrans}">
@@ -111,8 +111,12 @@
             <TextBlock Padding="5 0">Kommentar:</TextBlock>
             <TextBox Text="{Binding SelectedTrans.Name, Mode=TwoWay}"></TextBox>
             <StackPanel Orientation="Horizontal" >
-                <CheckBox  IsChecked="{Binding SelectedTrans.Reocurring, Mode=TwoWay}" Margin="5,0,0,0"></CheckBox>
+                <CheckBox  IsChecked="{Binding SelectedTrans.ReocurringMonth, Mode=TwoWay}" Margin="5,0,0,0"></CheckBox>
                 <TextBlock Padding="5 0">Är det återkommande? (Varje månad)</TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" >
+                <CheckBox  IsChecked="{Binding SelectedTrans.ReocurringYear, Mode=TwoWay}" Margin="5,0,0,0"></CheckBox>
+                <TextBlock Padding="5 0">Är det återkommande? (Varje år)</TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal" >
                 <CheckBox  IsChecked="{Binding SelectedTrans.IsThisSalary, Mode=TwoWay}" Margin="5,0,0,0"></CheckBox>
