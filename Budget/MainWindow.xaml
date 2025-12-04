@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Budget"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-
+    
     <Grid x:Name="BudgetGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -104,6 +104,7 @@
                 <TextBlock Padding="5 0">Mängd:</TextBlock>
                 <TextBox  Text="{Binding SelectedTrans.Money, Mode=TwoWay}" Width="90"></TextBox>
             </StackPanel>
+            
             <StackPanel Orientation="Horizontal" >
                 <CheckBox  IsChecked="{Binding SelectedTrans.IsThisIncome, Mode=TwoWay}" Margin="5,0,0,0"/>
                 <TextBlock Padding="5 0"><Run Text="Är det en intäkt?"/></TextBlock>
@@ -117,10 +118,6 @@
             <StackPanel Orientation="Horizontal" >
                 <CheckBox  IsChecked="{Binding SelectedTrans.ReocurringYear, Mode=TwoWay}" Margin="5,0,0,0"></CheckBox>
                 <TextBlock Padding="5 0">Är det återkommande? (Varje år)</TextBlock>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" >
-                <CheckBox  IsChecked="{Binding SelectedTrans.IsThisSalary, Mode=TwoWay}" Margin="5,0,0,0"></CheckBox>
-                <TextBlock Padding="5 0">Är det lön?</TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal" >
                 <TextBlock Padding="5 0">Sjukdagar:</TextBlock>
