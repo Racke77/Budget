@@ -24,11 +24,12 @@ namespace Budget.Models
 
         public void CalculateValue()
         {
+            if (CalculatedValue != Money) { CalculatedValue = Money; } //set to money as a start
             if (IsThisIncome == false && CalculatedValue > 0)
             {
                 CalculatedValue *= -1; //modify to negative if expense
             }
-            else if(IsThisIncome && CalculatedValue < 0)
+            if(IsThisIncome && CalculatedValue < 0)
             {
                 CalculatedValue *= -1; //modify to positive if accidental negative
             }

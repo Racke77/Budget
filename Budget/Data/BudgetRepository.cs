@@ -22,9 +22,38 @@ namespace Budget.Data
         //CREATE
         public void CreateMonth(Month month)
         {
+            month = RecreateReocurringMoney(month);
             applicationDbContext.Months.Add(month);
             applicationDbContext.SaveChanges();
         }
+        private Month RecreateReocurringMoney(Month month) //don't do anything with VM -> SelectedMonth updates that
+        {
+            var temp = GetLastMonth();
+            foreach(var item in temp.ListMoney)
+            {
+                if (item.Reocurring==true)
+                {
+                    var tempItem = CopyMoneyTransaction(item);
+                    month.ListMoney.Add(tempItem);
+                }
+            }
+            return month;
+        }
+
+        private MoneyTransaction CopyMoneyTransaction(MoneyTransaction oldMoney)
+        {
+            var newMoney = new MoneyTransaction();
+            newMoney = GiveMoneyAnId(newMoney);
+            newMoney.Name = oldMoney.Name;
+            newMoney.Money = oldMoney.Money;
+            newMoney.IsThisIncome = oldMoney.IsThisIncome;
+            newMoney.IsThisSalary = oldMoney.IsThisSalary;
+            newMoney.Reocurring = oldMoney.Reocurring;
+            newMoney.SickDays = 0;
+            newMoney.CalculateValue();
+            return newMoney;
+        }
+
         public void CreateMoneyTransaction(MoneyTransaction money)
         {
             applicationDbContext.MoneyTransactions.Add(money);
@@ -43,7 +72,7 @@ namespace Budget.Data
                 .Where(m => m.Id == month.Id)
                 .Include(m => m.ListMoney)
                 .FirstOrDefault();
-            temp.ListMoney.DistinctBy(x => x.Id);
+            temp.ListMoney.DistinctBy(x => x.Id); //making sure no doubles get in
             var moneyTemp = new ObservableCollection<MoneyVM>();
             foreach (var item in temp.ListMoney)
             {
@@ -51,6 +80,13 @@ namespace Budget.Data
             }
 
             return moneyTemp;
+        }
+        public Month GetLastMonth()
+        {
+            return applicationDbContext.Months
+                .OrderBy(z => z.Id)
+                .Include(z=>z.ListMoney)
+                .LastOrDefault();
         }
 
         //UPDATE

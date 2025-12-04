@@ -34,7 +34,7 @@ namespace Budget.ViewModels
             set
             {
                 selectedMonth = value;
-                if (selectedMonth!=null) { BudgetRepository.UpdateMonth(selectedMonth); }    
+                if (selectedMonth != null) { BudgetRepository.UpdateMonth(selectedMonth); }
                 RaisePropertyChanged();
                 //ListAllTransactions();
                 DeleteMonthCommand.RaiseCanExecuteChanged();
@@ -72,9 +72,10 @@ namespace Budget.ViewModels
         {
             if (SelectedMonth is not null)
             {
-                Months.Remove(SelectedMonth);
                 BudgetRepository.DeleteMonth(SelectedMonth); //might be the double-layer here causing the problem
-                SelectedMonth = null;
+                Months.Remove(SelectedMonth); //removes from VM
+                RaisePropertyChanged();
+                SelectedMonth = null; //will update things on its own
             }
         }
         private bool CanDeleteMonth(object? parameter) => SelectedMonth is not null;

@@ -10,7 +10,7 @@ namespace Budget.Models
     {
         public int Id { get; set; }
         public string Name { get; set; } = "";
-        public List<MoneyTransaction> ListMoney { get; set; }
+        public List<MoneyTransaction> ListMoney { get; set; } = new List<MoneyTransaction>();
         public Month()
         {
             
