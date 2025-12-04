@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Budget"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    
+
     <Grid x:Name="BudgetGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -19,6 +19,7 @@
         </Grid.RowDefinitions>
         <Grid.Resources>
         </Grid.Resources>
+
         <!--GRID 1/1-->
         <StackPanel Orientation="Horizontal" Grid.ColumnSpan="3">
             <Button x:Name="btnAddMonth" 
@@ -95,7 +96,7 @@
 
         <!--GRID 3/1-->
         <StackPanel Grid.Row="0" Grid.Column="2"  Orientation="Horizontal" Grid.ColumnSpan="3">
-            
+
         </StackPanel>
 
         <!--GRID 3/2-->
@@ -104,7 +105,13 @@
                 <TextBlock Padding="5 0">Mängd:</TextBlock>
                 <TextBox  Text="{Binding SelectedTrans.Money, Mode=TwoWay}" Width="90"></TextBox>
             </StackPanel>
-            
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock Text="{Binding SelectedTrans.Category, Mode=TwoWay}"></TextBlock>
+                <ComboBox x:Name="TransCategory" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="150"
+                    ItemsSource="{Binding SelectedTrans.AllCategories, Mode=TwoWay}"
+                    SelectedValue="{Binding SelectedTrans.Category, Mode=TwoWay}"
+                    DisplayMemberPath="{Binding SelectedTrans.AllCategories, Mode=TwoWay}"/>
+            </StackPanel>
             <StackPanel Orientation="Horizontal" >
                 <CheckBox  IsChecked="{Binding SelectedTrans.IsThisIncome, Mode=TwoWay}" Margin="5,0,0,0"/>
                 <TextBlock Padding="5 0"><Run Text="Är det en intäkt?"/></TextBlock>

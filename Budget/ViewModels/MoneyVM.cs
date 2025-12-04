@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using Budget.Calculations;
 using Budget.Models;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace Budget.ViewModels
 {
@@ -51,6 +53,25 @@ namespace Budget.ViewModels
             set
             {
                 model.Category = value;
+                RaisePropertyChanged();
+            }
+        }
+        public ObservableCollection<MoneyCategoryEnum> AllCategories
+        {
+            get
+            {
+                var values = Enum.GetValues(typeof(MoneyCategoryEnum));
+                ObservableCollection<MoneyCategoryEnum> result = new ObservableCollection<MoneyCategoryEnum>();
+                foreach (MoneyCategoryEnum item in values)
+                {
+                    result.Add(item);
+                }
+                return result;
+            }
+            set
+            {
+                
+                AllCategories = value;
                 RaisePropertyChanged();
             }
         }
