@@ -33,10 +33,10 @@ namespace Budget.Migrations
                     b.Property<float>("CalculatedValue")
                         .HasColumnType("real");
 
-                    b.Property<bool>("IsThisIncome")
-                        .HasColumnType("bit");
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
 
-                    b.Property<bool>("IsThisSalary")
+                    b.Property<bool>("IsThisIncome")
                         .HasColumnType("bit");
 
                     b.Property<float>("Money")

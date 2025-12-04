@@ -34,7 +34,7 @@ namespace Budget.Migrations
                     IsThisIncome = table.Column<bool>(type: "bit", nullable: false),
                     ReocurringMonth = table.Column<bool>(type: "bit", nullable: false),
                     ReocurringYear = table.Column<bool>(type: "bit", nullable: false),
-                    IsThisSalary = table.Column<bool>(type: "bit", nullable: false),
+                    Category = table.Column<int>(type: "int", nullable: false),
                     SickDays = table.Column<int>(type: "int", nullable: false),
                     CalculatedValue = table.Column<float>(type: "real", nullable: false),
                     MonthId = table.Column<int>(type: "int", nullable: true)

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Budget.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251204090527_init")]
+    [Migration("20251204093901_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -36,10 +36,10 @@ namespace Budget.Migrations
                     b.Property<float>("CalculatedValue")
                         .HasColumnType("real");
 
-                    b.Property<bool>("IsThisIncome")
-                        .HasColumnType("bit");
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
 
-                    b.Property<bool>("IsThisSalary")
+                    b.Property<bool>("IsThisIncome")
                         .HasColumnType("bit");
 
                     b.Property<float>("Money")

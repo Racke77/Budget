@@ -45,12 +45,12 @@ namespace Budget.ViewModels
                 RaisePropertyChanged();
             }
         }
-        public bool IsThisSalary
+        public MoneyCategoryEnum Category
         {
-            get { return model.IsThisSalary; }
+            get { return model.Category; }
             set
             {
-                model.IsThisSalary = value;
+                model.Category = value;
                 RaisePropertyChanged();
             }
         }

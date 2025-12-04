@@ -15,7 +15,7 @@ namespace Budget.Models
         public bool IsThisIncome { get; set; } = false;
         public bool ReocurringMonth { get; set; } = false;
         public bool ReocurringYear { get; set; } = false;
-        public bool IsThisSalary { get; set; } = false;
+        public MoneyCategoryEnum Category { get; set; }
         public int SickDays { get; set; }
         public float CalculatedValue { get; set; } //otherwise it will just keep updating forever
         public MoneyTransaction()
@@ -34,7 +34,7 @@ namespace Budget.Models
             {
                 CalculatedValue *= -1; //modify to positive if accidental negative
             }
-            if (IsThisSalary && Money == CalculatedValue)
+            if (Category==MoneyCategoryEnum.Salary && Money == CalculatedValue)
             {
                 var salaryCalculator = new CalculateSalary(Money); //send in base-money
                 CalculatedValue = salaryCalculator.SalaryCalc(SickDays); //update with calculated value

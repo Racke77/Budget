@@ -63,7 +63,7 @@ namespace Budget.Data
             newMoney.Name = oldMoney.Name;
             newMoney.Money = oldMoney.Money;
             newMoney.IsThisIncome = oldMoney.IsThisIncome;
-            newMoney.IsThisSalary = oldMoney.IsThisSalary;
+            newMoney.Category = oldMoney.Category;
             newMoney.ReocurringMonth = oldMoney.ReocurringMonth;
             newMoney.ReocurringYear = oldMoney.ReocurringYear;
             newMoney.SickDays = 0;
@@ -172,7 +172,7 @@ namespace Budget.Data
             temp.Name = moneyVM.Name;
             temp.Money = moneyVM.Money;
             temp.IsThisIncome = moneyVM.IsThisIncome;
-            temp.IsThisSalary = moneyVM.IsThisSalary;
+            temp.Category = moneyVM.Category;
             temp.ReocurringMonth = moneyVM.ReocurringMonth;
             temp.ReocurringYear = moneyVM.ReocurringYear;
             temp.CalculateValue();
