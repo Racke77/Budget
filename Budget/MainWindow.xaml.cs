@@ -18,6 +18,5 @@ namespace Budget
             viewModel = new BudgetVM(dbContext);
             DataContext = viewModel;
         }
-
     }
 }

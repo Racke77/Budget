@@ -51,6 +51,17 @@ namespace Budget.ViewModels
                 DeleteTransactionCommand.RaiseCanExecuteChanged();
             }
         }
+        private bool hasMoneySelected;
+        public bool HasMoneySelected
+        {
+            get { return hasMoneySelected; }
+            set
+            {
+                if (selectedTrans != null) { hasMoneySelected = true; }
+                else { HasMoneySelected = false; }
+                RaisePropertyChanged();
+            }
+        }
         public DelegateCommand AddMonthCommand { get; }
         public DelegateCommand DeleteMonthCommand { get; }
         public DelegateCommand AddTransactionCommand { get; }
