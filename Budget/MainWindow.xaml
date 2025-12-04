@@ -83,15 +83,21 @@
                       SelectedItem="{Binding SelectedTrans}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel x:Name="border" Orientation="Horizontal">
-                            <TextBlock Text="{Binding Name}"  Margin="0 5 0 5"></TextBlock>
-                            <TextBlock Text="{Binding CalculatedValue}"  Margin="0 5 0 5" FontWeight="Bold"></TextBlock>
-                        </StackPanel>
+                        <Grid x:Name="border" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition MinWidth="120"></ColumnDefinition>
+                                <ColumnDefinition MinWidth="120"></ColumnDefinition>                                
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Category}" ></TextBlock>
+                            <TextBlock Grid.Column="2" HorizontalAlignment="Right" Text="{Binding CalculatedValue, StringFormat={}{0:C00}, ConverterCulture=sv-SE}"></TextBlock>                            
+                        </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <TextBlock>Calculated Money</TextBlock>
-            <TextBlock Text="{Binding SelectedMonth.CalcFullNumber, Mode=TwoWay}"  Margin="0 5 0 5" FontWeight="Bold"></TextBlock>
+            <Grid>
+                <TextBlock>Sammanlagt</TextBlock>
+                <TextBlock Text="{Binding SelectedMonth.CalcFullNumber, StringFormat={}{0:C00}, ConverterCulture=sv-SE, Mode=TwoWay}" Margin="0 0 15 0" FontWeight="Bold"  HorizontalAlignment="Right"/>
+            </Grid>
         </StackPanel>
 
         <!--GRID 3/1-->
