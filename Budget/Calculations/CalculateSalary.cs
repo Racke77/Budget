@@ -33,10 +33,5 @@ namespace Budget.Calculations
             var total = MathF.Round(sickSalary + nonSickSalary);
             return total;
         }
-        public bool HasSalaryBeenCalculated(MoneyVM moneyVM)
-        {
-            if (YearlySalary / 12 == moneyVM.Money) { return false; } //same as if it hasn't been calculated
-            else { return true; }
-        }
     }
 }

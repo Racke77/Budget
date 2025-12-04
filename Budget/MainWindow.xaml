@@ -109,21 +109,21 @@
         <StackPanel Grid.Row="1" Grid.Column="2" >
             <StackPanel Orientation="Horizontal" >
                 <TextBlock Padding="5 0">Mängd:</TextBlock>
-                <TextBox  Text="{Binding SelectedTrans.Money, Mode=TwoWay}" Width="90"></TextBox>
+                <TextBox  Text="{Binding SelectedTrans.Money, Mode=TwoWay}" Width="210" ></TextBox>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" >
-                <TextBlock Text="{Binding SelectedTrans.Category, Mode=TwoWay}"></TextBlock>
-                <ComboBox x:Name="TransCategory" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="150"
+            <StackPanel Orientation="Horizontal"  >
+                <TextBlock Padding="5 0" HorizontalAlignment="Left" VerticalAlignment="Center" >Kategori:</TextBlock>
+                <ComboBox x:Name="TransCategory" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="100"
                     ItemsSource="{Binding SelectedTrans.AllCategories, Mode=TwoWay}"
                     SelectedValue="{Binding SelectedTrans.Category, Mode=TwoWay}"
                     DisplayMemberPath="{Binding SelectedTrans.AllCategories, Mode=TwoWay}"/>
             </StackPanel>
+            <TextBlock Padding="5 0">Kommentar:</TextBlock>
+            <TextBox Text="{Binding SelectedTrans.Name, Mode=TwoWay}"></TextBox>
             <StackPanel Orientation="Horizontal" >
                 <CheckBox  IsChecked="{Binding SelectedTrans.IsThisIncome, Mode=TwoWay}" Margin="5,0,0,0"/>
                 <TextBlock Padding="5 0"><Run Text="Är det en intäkt?"/></TextBlock>
             </StackPanel>
-            <TextBlock Padding="5 0">Kommentar:</TextBlock>
-            <TextBox Text="{Binding SelectedTrans.Name, Mode=TwoWay}"></TextBox>
             <StackPanel Orientation="Horizontal" >
                 <CheckBox  IsChecked="{Binding SelectedTrans.ReocurringMonth, Mode=TwoWay}" Margin="5,0,0,0"></CheckBox>
                 <TextBlock Padding="5 0">Är det återkommande? (Varje månad)</TextBlock>

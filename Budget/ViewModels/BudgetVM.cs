@@ -36,7 +36,6 @@ namespace Budget.ViewModels
                 selectedMonth = value;
                 if (selectedMonth != null) { BudgetRepository.UpdateMonth(selectedMonth); }
                 RaisePropertyChanged();
-                //ListAllTransactions();
                 DeleteMonthCommand.RaiseCanExecuteChanged();
             }
         }
@@ -87,7 +86,6 @@ namespace Budget.ViewModels
             else if (previousMonth.Name == MonthNameEnum.December) { monthName = MonthNameEnum.January; }
             else { monthName = previousMonth.Name + 1; }
             Month month = new() { Name = monthName }; //new month is next month
-            ///month = BudgetRepository.GiveMonthAnId(month);
             BudgetRepository.CreateMonth(month);
             months.Clear();
             var allMonths = BudgetRepository.GetAllMonths();
@@ -109,29 +107,13 @@ namespace Budget.ViewModels
             }
         }
         private bool CanDeleteTransaction(object? parameter) => SelectedTrans is not null;
-        private void AddTransaction(object? parameter) //CAN'T DO THIS -> lots of errors
+        private void AddTransaction(object? parameter) 
         {
             MoneyTransaction trans = new();
-            //trans = BudgetRepository.GiveMoneyAnId(trans); //to stop it from giving everything ID==0
             BudgetRepository.GiveMoneyAMonth(trans, SelectedMonth);
             BudgetRepository.CreateMoneyTransaction(trans);
             var transVM = new MoneyVM(trans);
             SelectedTrans = transVM;
-        }
-
-        //READ -> calculations
-        private ObservableCollection<MoneyVM> ListAllTransactions()
-        {
-            if (SelectedMonth == null)
-            {
-                return null;
-            }
-            else
-            {
-                SelectedMonth.MoneyTrans.Clear();
-                SelectedMonth.MoneyTrans = BudgetRepository.GetMonthlyTransactions(SelectedMonth);
-                return SelectedMonth.MoneyTrans;
-            }
         }
     }
 }

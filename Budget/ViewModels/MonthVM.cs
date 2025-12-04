@@ -24,18 +24,6 @@ namespace Budget.ViewModels
             }
         }
 
-        //private MoneyVM? selectedTrans;
-        //public MoneyVM? SelectedTrans
-        //{
-        //    get { return selectedTrans; }
-        //    set
-        //    {
-        //        selectedTrans = value;
-        //        RaisePropertyChanged();
-        //        DeleteCommand.RaiseCanExecuteChanged();
-        //    }
-        //}
-
         private readonly Month month;
 
         public MonthNameEnum Name
@@ -70,30 +58,9 @@ namespace Budget.ViewModels
             }
         }
 
-        //public DelegateCommand AddCommand { get; }
-        //public DelegateCommand DeleteCommand { get; }
         public MonthVM(Month month) //CONSTRUCTOR
         {
             this.month = month;
-            //AddCommand = new DelegateCommand(AddTrans);
-            //DeleteCommand = new DelegateCommand(DeleteTrans, CanDelete);
         }
-
-        //private void DeleteTrans(object? parameter)
-        //{
-        //    if (SelectedTrans is not null)
-        //    {
-        //        MoneyTrans.Remove(SelectedTrans);
-        //        SelectedTrans = null;
-        //    }
-        //}
-        //private bool CanDelete(object? parameter) => SelectedTrans is not null;
-        //private void AddTrans(object? parameter)
-        //{
-        //    MoneyTransaction mTrans = new();
-        //    var mTransVM = new MoneyVM(mTrans);
-        //    MoneyTrans.Add(mTransVM);
-        //    SelectedTrans = mTransVM;
-        //}
     }
 }

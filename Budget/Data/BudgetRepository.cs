@@ -59,7 +59,6 @@ namespace Budget.Data
         private MoneyTransaction CopyMoneyTransaction(MoneyTransaction oldMoney)
         {
             var newMoney = new MoneyTransaction();
-            //newMoney = GiveMoneyAnId(newMoney);
             newMoney.Name = oldMoney.Name;
             newMoney.Money = oldMoney.Money;
             newMoney.IsThisIncome = oldMoney.IsThisIncome;
@@ -116,23 +115,6 @@ namespace Budget.Data
         }
 
         //UPDATE
-        public Month GiveMonthAnId(Month month)
-        {
-            var prev = applicationDbContext.Months.OrderBy(z => z.Id).LastOrDefault();
-            if (prev == null) { month.Id = 1; }
-            else
-            {
-                month.Id = prev.Id + 1;
-            }
-            return month;
-        }
-        public MoneyTransaction GiveMoneyAnId(MoneyTransaction money)
-        {
-            var prev = applicationDbContext.MoneyTransactions.OrderBy(z => z.Id).LastOrDefault();
-            if (prev == null) { money.Id = 1; }
-            else { money.Id = prev.Id + 1; }
-            return money;
-        }
         public void GiveMoneyAMonth(MoneyTransaction money, MonthVM monthVM)
         {
             var temp = applicationDbContext.Months
