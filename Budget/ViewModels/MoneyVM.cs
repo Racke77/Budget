@@ -27,12 +27,21 @@ namespace Budget.ViewModels
                 RaisePropertyChanged();
             }
         }
-        public bool Reocurring
+        public bool ReocurringMonth
         {
-            get { return model.Reocurring; }
+            get { return model.ReocurringMonth; }
             set
             {
-                model.Reocurring = value;
+                model.ReocurringMonth = value;
+                RaisePropertyChanged();
+            }
+        }
+        public bool ReocurringYear
+        {
+            get { return model.ReocurringYear; }
+            set
+            {
+                model.ReocurringYear = value;
                 RaisePropertyChanged();
             }
         }

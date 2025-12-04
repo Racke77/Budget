@@ -9,11 +9,11 @@ namespace Budget.Models
     public class Month
     {
         public int Id { get; set; }
-        public string Name { get; set; } = "";
+        public MonthNameEnum Name { get; set; }
         public List<MoneyTransaction> ListMoney { get; set; } = new List<MoneyTransaction>();
         public Month()
         {
             
-        }
+        }        
     }
 }

@@ -13,7 +13,8 @@ namespace Budget.Models
         public string Name { get; set; } = "";
         public float Money { get; set; }
         public bool IsThisIncome { get; set; } = false;
-        public bool Reocurring { get; set; } = false;
+        public bool ReocurringMonth { get; set; } = false;
+        public bool ReocurringYear { get; set; } = false;
         public bool IsThisSalary { get; set; } = false;
         public int SickDays { get; set; }
         public float CalculatedValue { get; set; } //otherwise it will just keep updating forever

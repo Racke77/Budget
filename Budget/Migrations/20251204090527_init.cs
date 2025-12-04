@@ -14,9 +14,9 @@ namespace Budget.Migrations
                 name: "Months",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -27,16 +27,17 @@ namespace Budget.Migrations
                 name: "MoneyTransactions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Money = table.Column<float>(type: "REAL", nullable: false),
-                    IsThisIncome = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Reocurring = table.Column<bool>(type: "INTEGER", nullable: false),
-                    IsThisSalary = table.Column<bool>(type: "INTEGER", nullable: false),
-                    SickDays = table.Column<int>(type: "INTEGER", nullable: false),
-                    CalculatedValue = table.Column<float>(type: "REAL", nullable: false),
-                    MonthId = table.Column<int>(type: "INTEGER", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Money = table.Column<float>(type: "real", nullable: false),
+                    IsThisIncome = table.Column<bool>(type: "bit", nullable: false),
+                    ReocurringMonth = table.Column<bool>(type: "bit", nullable: false),
+                    ReocurringYear = table.Column<bool>(type: "bit", nullable: false),
+                    IsThisSalary = table.Column<bool>(type: "bit", nullable: false),
+                    SickDays = table.Column<int>(type: "int", nullable: false),
+                    CalculatedValue = table.Column<float>(type: "real", nullable: false),
+                    MonthId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {

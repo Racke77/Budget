@@ -28,10 +28,19 @@ namespace Budget.Data
         }
         private Month RecreateReocurringMoney(Month month) //don't do anything with VM -> SelectedMonth updates that
         {
-            var temp = GetLastMonth();
+            var temp = GetLastMonth(); //previous month
             foreach(var item in temp.ListMoney)
             {
-                if (item.Reocurring==true)
+                if (item.ReocurringMonth==true) //if it will reoccur monthly make a copy of it
+                {
+                    var tempItem = CopyMoneyTransaction(item);
+                    month.ListMoney.Add(tempItem);
+                }
+            }
+            var temp2 = GetLastEnumMonth(month); //last year
+            foreach (var item in temp2.ListMoney)
+            {
+                if (item.ReocurringYear == true) //if it will reoccur yearly make a copy of it
                 {
                     var tempItem = CopyMoneyTransaction(item);
                     month.ListMoney.Add(tempItem);
@@ -39,6 +48,7 @@ namespace Budget.Data
             }
             return month;
         }
+
 
         private MoneyTransaction CopyMoneyTransaction(MoneyTransaction oldMoney)
         {
@@ -48,7 +58,8 @@ namespace Budget.Data
             newMoney.Money = oldMoney.Money;
             newMoney.IsThisIncome = oldMoney.IsThisIncome;
             newMoney.IsThisSalary = oldMoney.IsThisSalary;
-            newMoney.Reocurring = oldMoney.Reocurring;
+            newMoney.ReocurringMonth = oldMoney.ReocurringMonth;
+            newMoney.ReocurringYear = oldMoney.ReocurringYear;
             newMoney.SickDays = 0;
             newMoney.CalculateValue();
             return newMoney;
@@ -86,6 +97,14 @@ namespace Budget.Data
             return applicationDbContext.Months
                 .OrderBy(z => z.Id)
                 .Include(z=>z.ListMoney)
+                .LastOrDefault();
+        }
+        private Month GetLastEnumMonth(Month month)
+        {
+            return applicationDbContext.Months
+                .Where(z => z.Name == month.Name) //only check accurate enum
+                .OrderBy(z => z.Id)
+                .Include(z => z.ListMoney)
                 .LastOrDefault();
         }
 
@@ -128,8 +147,7 @@ namespace Budget.Data
         }
         public void UpdateMoneyTransaction(MoneyVM money)
         {
-
-            applicationDbContext.MoneyTransactions.Update(ConvertMoneyVMToMoney(money)); //overwrite due to identical ID
+            applicationDbContext.MoneyTransactions.Update(ConvertMoneyVMToMoney(money));
             applicationDbContext.SaveChanges();
         }
         private MoneyTransaction ConvertMoneyVMToMoney(MoneyVM moneyVM)
@@ -141,14 +159,15 @@ namespace Budget.Data
             temp.Money = moneyVM.Money;
             temp.IsThisIncome = moneyVM.IsThisIncome;
             temp.IsThisSalary = moneyVM.IsThisSalary;
-            temp.Reocurring = moneyVM.Reocurring;
+            temp.ReocurringMonth = moneyVM.ReocurringMonth;
+            temp.ReocurringYear = moneyVM.ReocurringYear;
             temp.CalculateValue();
             temp.SickDays = moneyVM.SickDays;
             return temp;
         }
 
         //DELETE
-        public void DeleteMonth(MonthVM month) //error now
+        public void DeleteMonth(MonthVM month)
         {
             applicationDbContext.Months.Remove(
                 applicationDbContext.Months

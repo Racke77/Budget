@@ -38,7 +38,7 @@ namespace Budget.ViewModels
 
         private readonly Month month;
 
-        public string Name
+        public MonthNameEnum Name
         {
             get { return month.Name; }
             set

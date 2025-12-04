@@ -81,7 +81,12 @@ namespace Budget.ViewModels
         private bool CanDeleteMonth(object? parameter) => SelectedMonth is not null;
         private void AddMonth(object? parameter)
         {
-            Month month = new();
+            var previousMonth = BudgetRepository.GetLastMonth();
+            MonthNameEnum monthName;
+            if (previousMonth == null) { monthName = 0; }
+            else if (previousMonth.Name == MonthNameEnum.December) { monthName = MonthNameEnum.January; }
+            else { monthName = previousMonth.Name + 1; }
+            Month month = new() { Name = monthName }; //new month is next month
             month = BudgetRepository.GiveMonthAnId(month);
             BudgetRepository.CreateMonth(month);
             months.Clear();
