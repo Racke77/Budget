@@ -47,6 +47,15 @@ namespace Budget.ViewModels
                 RaisePropertyChanged();
             }
         }
+        public int Id
+        {
+            get { return month.Id; }
+            set
+            {
+                month.Id = value;
+                RaisePropertyChanged();
+            }
+        }
         private float calcFullNumber = new();
         public float CalcFullNumber
         {

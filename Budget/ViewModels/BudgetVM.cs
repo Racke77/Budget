@@ -10,7 +10,16 @@ namespace Budget.ViewModels
         private ObservableCollection<MonthVM> months = new();
         public ObservableCollection<MonthVM> Months
         {
-            get { return months; }
+            get
+            {
+                months.Clear();
+                var allMonths = BudgetRepository.GetAllMonths();
+                foreach (var time in allMonths)
+                {
+                    months.Add(new MonthVM(time));
+                }
+                return months;
+            }
             set
             {
                 months = value;
@@ -25,8 +34,9 @@ namespace Budget.ViewModels
             set
             {
                 selectedMonth = value;
+                if (selectedMonth!=null) { BudgetRepository.UpdateMonth(selectedMonth); }    
                 RaisePropertyChanged();
-                ListAllTransactions();
+                //ListAllTransactions();
                 DeleteMonthCommand.RaiseCanExecuteChanged();
             }
         }
@@ -36,6 +46,7 @@ namespace Budget.ViewModels
             get { return selectedTrans; }
             set
             {
+                if (selectedTrans != null) { BudgetRepository.UpdateMoneyTransaction(selectedTrans); }
                 selectedTrans = value;
                 RaisePropertyChanged();
                 DeleteTransactionCommand.RaiseCanExecuteChanged();
@@ -48,16 +59,6 @@ namespace Budget.ViewModels
         private BudgetRepository BudgetRepository { get; set; }
         public BudgetVM(ApplicationDbContext applicationDbContext) //CONSTRUCTOR
         {
-            //SEEDING
-            Months.Add(new MonthVM(new Month() { Name = "Test 1" }));
-            Months.Add(new MonthVM(new Month() { Name = "Test 2" }));
-
-            foreach (MonthVM month in Months)
-            {
-                month.MoneyTrans.Add(new MoneyVM(new MoneyTransaction() { Money = 1000, Name = "Test money" }));
-                month.MoneyTrans.Add(new MoneyVM(new MoneyTransaction() { Money = -1000, Name = "Test money" }));
-            }
-
             BudgetRepository = new BudgetRepository(applicationDbContext);
 
             //DELEGATE COMMANDS
@@ -72,6 +73,7 @@ namespace Budget.ViewModels
             if (SelectedMonth is not null)
             {
                 Months.Remove(SelectedMonth);
+                BudgetRepository.DeleteMonth(SelectedMonth); //might be the double-layer here causing the problem
                 SelectedMonth = null;
             }
         }
@@ -79,10 +81,16 @@ namespace Budget.ViewModels
         private void AddMonth(object? parameter)
         {
             Month month = new();
+            month = BudgetRepository.GiveMonthAnId(month);
             BudgetRepository.CreateMonth(month);
-            var monthVM = new MonthVM(month);
-            Months.Add(monthVM);
-            SelectedMonth = monthVM;
+            months.Clear();
+            var allMonths = BudgetRepository.GetAllMonths();
+            foreach (var time in allMonths)
+            {
+                var temp = new MonthVM(time);
+                months.Add(temp);
+                if (time.Id == month.Id) { SelectedMonth = temp; }
+            }
         }
 
         private void DeleteTransaction(object? parameter)
@@ -90,18 +98,18 @@ namespace Budget.ViewModels
             if (SelectedTrans is not null)
             {
                 SelectedMonth.MoneyTrans.Remove(SelectedTrans);
+                BudgetRepository.DeleteMoneyTransaction(SelectedTrans);
                 SelectedTrans = null;
             }
         }
         private bool CanDeleteTransaction(object? parameter) => SelectedTrans is not null;
-        private void AddTransaction(object? parameter)
+        private void AddTransaction(object? parameter) //CAN'T DO THIS -> lots of errors
         {
-            MoneyTransaction trans = new()
-            {
-                Id = SelectedMonth.MoneyTrans.Count //to stop it from giving everything ID==0
-            }; 
+            MoneyTransaction trans = new();
+            trans = BudgetRepository.GiveMoneyAnId(trans); //to stop it from giving everything ID==0
+            BudgetRepository.GiveMoneyAMonth(trans, SelectedMonth);
+            BudgetRepository.CreateMoneyTransaction(trans);
             var transVM = new MoneyVM(trans);
-            SelectedMonth.MoneyTrans.Add(transVM);
             SelectedTrans = transVM;
         }
 
@@ -114,6 +122,8 @@ namespace Budget.ViewModels
             }
             else
             {
+                SelectedMonth.MoneyTrans.Clear();
+                SelectedMonth.MoneyTrans = BudgetRepository.GetMonthlyTransactions(SelectedMonth);
                 return SelectedMonth.MoneyTrans;
             }
         }

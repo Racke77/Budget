@@ -95,16 +95,7 @@
 
         <!--GRID 3/1-->
         <StackPanel Grid.Row="0" Grid.Column="2"  Orientation="Horizontal" Grid.ColumnSpan="3">
-            <Button x:Name="btnSaveAndQuit" 
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Margin="10"
-                Padding="5"
-                Command="{Binding SaveToDatabase}" >
-                <StackPanel Orientation="Horizontal" >
-                    <TextBlock VerticalAlignment="Center">Spara och avsluta programmet</TextBlock>
-                </StackPanel>
-            </Button>
+            
         </StackPanel>
 
         <!--GRID 3/2-->

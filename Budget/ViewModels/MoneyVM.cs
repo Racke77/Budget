@@ -51,10 +51,7 @@ namespace Budget.ViewModels
             set
             {
                 model.IsThisIncome = value;
-                if (model.IsThisIncome == false && model.CalculatedValue > 0)
-                {
-                    model.CalculatedValue *= -1; //modify to negative if expense
-                }
+                model.CalculateValue();
                 RaisePropertyChanged();
             }
         }
@@ -64,11 +61,7 @@ namespace Budget.ViewModels
             set
             {
                 model.SickDays = value;
-                if (model.IsThisSalary && model.Money == model.CalculatedValue)
-                {
-                    var salaryCalculator = new CalculateSalary(model.Money); //send in base-money
-                    model.CalculatedValue = salaryCalculator.SalaryCalc(model.SickDays); //update with calculated value
-                }
+                model.CalculateValue();
                 RaisePropertyChanged();
             }
         }
@@ -88,10 +81,7 @@ namespace Budget.ViewModels
             {
                 model.Money = value;
                 model.CalculatedValue = model.Money; //same value
-                if (model.IsThisIncome == false && model.CalculatedValue > 0)
-                {
-                    model.CalculatedValue *= -1; //modify to negative if expense
-                }
+                model.CalculateValue();
                 RaisePropertyChanged();
             }
         }

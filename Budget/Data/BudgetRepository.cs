@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Budget.Models;
+using Budget.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Budget.Data
@@ -19,50 +20,112 @@ namespace Budget.Data
         }
 
         //CREATE
-        public async Task CreateMonth(Month month)
+        public void CreateMonth(Month month)
         {
-            await applicationDbContext.Months.AddAsync(month);
-            await applicationDbContext.SaveChangesAsync();
+            applicationDbContext.Months.Add(month);
+            applicationDbContext.SaveChanges();
         }
-        public async Task CreateMoneyTransaction(MoneyTransaction money)
+        public void CreateMoneyTransaction(MoneyTransaction money)
         {
-            await applicationDbContext.MoneyTransactions.AddAsync(money);
-            await applicationDbContext.SaveChangesAsync();
+            applicationDbContext.MoneyTransactions.Add(money);
+            applicationDbContext.SaveChanges();
         }
 
         //READ
-        public async Task<List<Month>> GetAllMonthsAsync()
+        public List<Month> GetAllMonths()
         {
-            return await applicationDbContext.Months
-                .Include(m => m.ListMoney)
-                .ToListAsync();
+            return applicationDbContext.Months
+                .ToList();
         }
-        public async Task<List<MoneyTransaction>> GetAllTransactionsByMonth()
+        public ObservableCollection<MoneyVM> GetMonthlyTransactions(MonthVM month)
         {
-            return await applicationDbContext.MoneyTransactions.ToListAsync();
+            var temp = applicationDbContext.Months
+                .Where(m => m.Id == month.Id)
+                .Include(m => m.ListMoney)
+                .FirstOrDefault();
+            temp.ListMoney.DistinctBy(x => x.Id);
+            var moneyTemp = new ObservableCollection<MoneyVM>();
+            foreach (var item in temp.ListMoney)
+            {
+                moneyTemp.Add(new MoneyVM(item));
+            }
+
+            return moneyTemp;
         }
 
         //UPDATE
-        public async Task UpdateMonth(Month month)
+        public Month GiveMonthAnId(Month month)
         {
-            applicationDbContext.Months.Update(month);
-            await applicationDbContext.SaveChangesAsync();
+            month.Id = applicationDbContext.Months.OrderBy(z => z.Id).LastOrDefault().Id+1; //stop whining about the ID you whimp
+            return month;
         }
-        public async Task UpdateMoneyTransaction(MoneyTransaction money)
+        public MoneyTransaction GiveMoneyAnId(MoneyTransaction money)
         {
-            applicationDbContext.MoneyTransactions.Update(money);
-            await applicationDbContext.SaveChangesAsync();
+            money.Id = applicationDbContext.MoneyTransactions.OrderBy(z=>z.Id).LastOrDefault().Id + 1;
+            return money;
+        }
+        public void GiveMoneyAMonth(MoneyTransaction money, MonthVM monthVM)
+        {
+            var temp = applicationDbContext.Months
+                .Where(m => m.Id == monthVM.Id)
+                .Include(m => m.ListMoney)
+                .FirstOrDefault();
+            temp.ListMoney.Add(money);
+        }
+        public void UpdateMonth(MonthVM month)
+        {
+            var temp = applicationDbContext.Months
+                .Where(m => m.Id == month.Id)
+                .Include(m=>m.ListMoney)
+                .FirstOrDefault();
+            temp.Name = month.Name;
+            //any changes to MONEY will go through database
+            //trust in the list that's pulled from database
+            month.MoneyTrans.Clear();
+            foreach (var money in temp.ListMoney)
+            {
+                month.MoneyTrans.Add(new MoneyVM(money));
+            }
+
+            applicationDbContext.Months.Update(temp);
+            applicationDbContext.SaveChanges();
+        }
+        public void UpdateMoneyTransaction(MoneyVM money)
+        {
+
+            applicationDbContext.MoneyTransactions.Update(ConvertMoneyVMToMoney(money)); //overwrite due to identical ID
+            applicationDbContext.SaveChanges();
+        }
+        private MoneyTransaction ConvertMoneyVMToMoney(MoneyVM moneyVM)
+        {
+            var temp = applicationDbContext.MoneyTransactions
+                .Where(m => m.Id == moneyVM.Id)
+                .FirstOrDefault();
+            temp.Name = moneyVM.Name;
+            temp.Money = moneyVM.Money;
+            temp.IsThisIncome = moneyVM.IsThisIncome;
+            temp.IsThisSalary = moneyVM.IsThisSalary;
+            temp.Reocurring = moneyVM.Reocurring;
+            temp.CalculateValue();
+            temp.SickDays = moneyVM.SickDays;
+            return temp;
         }
 
         //DELETE
-        public async Task DeleteMonth(Month month)
+        public void DeleteMonth(MonthVM month) //error now
         {
-            applicationDbContext.Months.Remove(month);
+            applicationDbContext.Months.Remove(
+                applicationDbContext.Months
+                    .Where(m => m.Id == month.Id)
+                    .FirstOrDefault());
             applicationDbContext.SaveChanges();
         }
-        public async Task DeleteMoneyTransaction(MoneyTransaction money)
+        public void DeleteMoneyTransaction(MoneyVM money)
         {
-            applicationDbContext.MoneyTransactions.Remove(money);
+            applicationDbContext.MoneyTransactions.Remove(
+                    applicationDbContext.MoneyTransactions
+                        .Where(m => m.Id == money.Id)
+                        .FirstOrDefault());
             applicationDbContext.SaveChanges();
         }
     }
