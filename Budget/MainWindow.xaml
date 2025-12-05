@@ -146,7 +146,7 @@
                 <TextBlock Padding="5 0">Är det återkommande? (Varje år)</TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal" >
-                <TextBlock Padding="5 0">Sjukdagar:</TextBlock>
+                <TextBlock Padding="5 0">Sjukdagar (förra månaden):</TextBlock>
                 <TextBox Text="{Binding SelectedTrans.SickDays, Mode=TwoWay}" Width="90"></TextBox>
             </StackPanel>
         </StackPanel>

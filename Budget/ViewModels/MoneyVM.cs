@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,30 +49,35 @@ namespace Budget.ViewModels
                 RaisePropertyChanged();
             }
         }
-        public MoneyCategoryEnum Category
+        public string Category
         {
-            get { return model.Category; }
+            get
+            {
+                var descriptionAttribute = model.Category.GetType()
+                        .GetMember(model.Category.ToString())[0]
+                        .GetCustomAttributes(typeof(DescriptionAttribute), inherit: false)[0] as DescriptionAttribute;
+                return descriptionAttribute.Description;
+            }
             set
             {
-                model.Category = value;
-                RaisePropertyChanged();
+                model.Category = GetEnumFromDescriptionString(value);
             }
         }
-        public ObservableCollection<MoneyCategoryEnum> AllCategories
+        public ObservableCollection<string> AllCategories
         {
             get
             {
                 var values = Enum.GetValues(typeof(MoneyCategoryEnum));
-                ObservableCollection<MoneyCategoryEnum> result = new ObservableCollection<MoneyCategoryEnum>();
+                ObservableCollection<string> result = new ObservableCollection<string>();
                 foreach (MoneyCategoryEnum item in values)
                 {
-                    result.Add(item);
+                    result.Add(GetDescriptionEnum(item));
                 }
                 return result;
             }
             set
             {
-                
+
                 AllCategories = value;
                 RaisePropertyChanged();
             }
@@ -124,6 +131,21 @@ namespace Budget.ViewModels
                 RaisePropertyChanged();
             }
         }
-
+        private string GetDescriptionEnum(MoneyCategoryEnum test)
+        {
+            var descriptionAttribute = test.GetType()
+                    .GetMember(test.ToString())[0]
+                    .GetCustomAttributes(typeof(DescriptionAttribute), inherit: false)[0] as DescriptionAttribute;
+            return descriptionAttribute.Description;
+        }
+        public MoneyCategoryEnum GetEnumFromDescriptionString(string value)
+        {
+            var values = Enum.GetValues(typeof(MoneyCategoryEnum));
+            foreach (MoneyCategoryEnum moneyEnum in values)
+            {
+                if(GetDescriptionEnum(moneyEnum) == value) { return moneyEnum; }
+            }
+            return MoneyCategoryEnum.Food;
+        }
     }
 }

@@ -154,7 +154,7 @@ namespace Budget.Data
             temp.Name = moneyVM.Name;
             temp.Money = moneyVM.Money;
             temp.IsThisIncome = moneyVM.IsThisIncome;
-            temp.Category = moneyVM.Category;
+            temp.Category = moneyVM.GetEnumFromDescriptionString(moneyVM.Category);
             temp.ReocurringMonth = moneyVM.ReocurringMonth;
             temp.ReocurringYear = moneyVM.ReocurringYear;
             temp.CalculateValue();
